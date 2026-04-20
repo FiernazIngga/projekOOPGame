@@ -4,6 +4,8 @@
  */
 package gameproject;
 
+import javax.swing.JFrame;
+
 /**
  *
  * @author M S I
@@ -14,7 +16,16 @@ public class GameProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
+        JFrame frame = new JFrame("Game Pesawat");
+        GamePesawat panel = new GamePesawat();
+
+        frame.add(panel);
+        frame.pack();
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setLocationRelativeTo(null);
+        frame.setVisible(true);
+
+        panel.startGameLoop();
     }
     
 }
