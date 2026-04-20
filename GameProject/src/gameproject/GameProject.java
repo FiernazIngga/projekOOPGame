@@ -4,28 +4,21 @@
  */
 package gameproject;
 
-import javax.swing.JFrame;
+import GameStart.FrameMain;
 
-/**
- *
- * @author M S I
- */
 public class GameProject {
 
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        JFrame frame = new JFrame("Game Pesawat");
-        GamePesawat panel = new GamePesawat();
-
-        frame.add(panel);
-        frame.pack();
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setLocationRelativeTo(null);
+        FrameMain frame = new FrameMain();
+    
+        // Munculkan ke layar
         frame.setVisible(true);
 
-        panel.startGameLoop();
+        // (Opsional) Biar muncul di tengah layar
+        frame.setLocationRelativeTo(null);
     }
     
 }
