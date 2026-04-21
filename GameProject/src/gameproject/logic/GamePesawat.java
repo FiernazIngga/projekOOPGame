@@ -1,5 +1,6 @@
 package gameproject.logic;
 
+import GameStart.FrameMain;
 import LoadFile.SoundPlayer;
 import javax.swing.*;
 import java.awt.*;
@@ -8,6 +9,7 @@ import gameproject.entity.Bullet;
 import LoadFile.Ledakan;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
+import java.util.Random;
 
 public class GamePesawat extends JPanel implements KeyListener {
     LogikaGame pesawat = new LogikaGame();
@@ -24,14 +26,16 @@ public class GamePesawat extends JPanel implements KeyListener {
     final int tembak_cd = 300;
     
     private BufferedImage backgroundImage, playerImage, enemyImage, explosionImage;
+    FrameMain mainFrame;
 
-    public GamePesawat(String pes1, String pes2, String n1, String n2, boolean isBot) {
+    public GamePesawat(FrameMain frame, String pes1, String pes2, String n1, String n2, boolean isBot) {
+        this.mainFrame = frame;
         this.namaP1 = n1;
         this.namaP2 = n2;
         this.isBotMode = isBot;
 
         try {
-            backgroundImage = ImageIO.read(getClass().getResource("/Resources/Image/backgroundGemini.png"));
+            backgroundImage = ImageIO.read(getClass().getResource(pilihBackground()));
             explosionImage = ImageIO.read(getClass().getResource("/Resources/Image/mentahanLedakanFiks.png"));
             
             // LOAD GAMBAR PLAYER 1
@@ -104,7 +108,18 @@ public class GamePesawat extends JPanel implements KeyListener {
             }
 
             // Opsional: Tampilkan Game Over jika loop berhenti
-            JOptionPane.showMessageDialog(this, "GAME OVER!");
+            int pilihan = JOptionPane.showConfirmDialog(
+                    this,
+                    "GAME OVER!\nMain lagi?",
+                    "Game Over",
+                    JOptionPane.YES_NO_OPTION
+            );
+
+            if (pilihan == JOptionPane.YES_OPTION) {
+                mainFrame.showPilihPesawat(); 
+            } else {
+                System.exit(0); // atau diam saja
+            }
         }).start();
     }
 
@@ -166,4 +181,15 @@ public class GamePesawat extends JPanel implements KeyListener {
     }
 
     @Override public void keyTyped(KeyEvent e) {}
+    
+    public static String pilihBackground() {
+        String[] backgrounds = {
+            "/Resources/BackgroundImage/background1.png",
+            "/Resources/BackgroundImage/background2.png",
+            "/Resources/BackgroundImage/background3.png"
+        };
+
+        int index = new java.util.Random().nextInt(backgrounds.length);
+        return backgrounds[index];
+    }
 }

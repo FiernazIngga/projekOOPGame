@@ -7,7 +7,7 @@ public class PilihPesawat extends JPanel {
     private FrameMain mainFrame;
     
     // Komponen UI
-    private JLabel labelJudul, labelPreview, lblNamaHint;
+    private JLabel labelJudul, labelPreview, lblNamaHint, lblPesawat;
     private JTextField txtNama;
     private JComboBox<String> comboPesawat;
     private JButton btnNext;
@@ -44,24 +44,29 @@ public class PilihPesawat extends JPanel {
         // 3. Input Nama & Dropdown (Kanan)
         lblNamaHint = new JLabel("Nama Pilot:");
         lblNamaHint.setForeground(Color.WHITE);
-        lblNamaHint.setBounds(700, 150, 100, 30);
+        lblNamaHint.setBounds(700, 150, 200, 30);
         add(lblNamaHint);
 
-        txtNama = new JTextField("Pilot_1");
+        txtNama = new JTextField("Pilot User 1");
         txtNama.setBounds(700, 180, 300, 40);
         txtNama.setFont(new Font("Arial", Font.PLAIN, 18));
         add(txtNama);
+        
+        lblPesawat = new JLabel("Pilih Pesawat:");
+        lblPesawat.setForeground(Color.WHITE);
+        lblPesawat.setBounds(700, 230, 200, 30);
+        add(lblPesawat);
 
         comboPesawat = new JComboBox<>(new String[]{"Pesawat Amerika", "Pesawat Jepang", "Pesawat Indonesia"});
         comboPesawat.setBounds(700, 260, 300, 40);
         comboPesawat.setFont(new Font("Arial", Font.PLAIN, 18));
-        comboPesawat.addActionListener(e -> updatePreview());
+        comboPesawat.addActionListener(e -> updatePreview((String) comboPesawat.getSelectedItem()));
         add(comboPesawat);
 
         // 4. Komponen Pilihan Mode (Awalnya Sembunyi)
         rdBot = new JRadioButton("LAWAN BOT (Single Player)", true);
         rdHuman = new JRadioButton("LAWAN TEMAN (Multiplayer 2P)");
-        rdBot.setBounds(700, 180, 300, 40);
+        rdBot.setBounds(250, 230, 300, 40);
         rdHuman.setBounds(700, 230, 300, 40);
         rdBot.setForeground(Color.WHITE); rdHuman.setForeground(Color.WHITE);
         rdBot.setOpaque(false); rdHuman.setOpaque(false);
@@ -84,7 +89,7 @@ public class PilihPesawat extends JPanel {
         btnNext.addActionListener(e -> handleNextStep());
         add(btnNext);
 
-        updatePreview();
+        updatePreview((String) comboPesawat.getSelectedItem());
     }
 
     private void handleNextStep() {
@@ -102,12 +107,14 @@ public class PilihPesawat extends JPanel {
             step = 2;
             labelJudul.setText("PILIH MODE PERMAINAN");
             lblNamaHint.setVisible(false);
+            lblPesawat.setVisible(false);
             txtNama.setVisible(false);
             comboPesawat.setVisible(false);
             labelPreview.setVisible(false);
             
             rdBot.setVisible(true);
             rdHuman.setVisible(true);
+            btnNext.setBounds(440, 380, 300, 60);
             btnNext.setText("KONFIRMASI MODE");
 
         } else if (step == 2) {
@@ -119,6 +126,7 @@ public class PilihPesawat extends JPanel {
                 pesawatP2 = "Pesawat Musuh"; // Default pesawat bot
                 mainFrame.jalankanGame(pesawatP1, pesawatP2, namaP1, namaP2, true);
             } else {
+                rdBot.setVisible(false); rdHuman.setVisible(false);
                 // Jika pilih TEMAN, masuk ke input Player 2
                 step = 3;
                 labelJudul.setText("REGISTRASI PLAYER 2");
@@ -133,12 +141,17 @@ public class PilihPesawat extends JPanel {
                 comboPesawat.addItem("Pesawat Rusia");
 
                 // Munculkan kembali input
+                lblNamaHint.setText("Nama Pilot Pesawat 2:");
+                lblPesawat.setText("Pilih Pesawat Pilot 2:");
+                lblNamaHint.setVisible(true);
+                lblPesawat.setVisible(true);
                 txtNama.setVisible(true);
                 txtNama.setText("Pilot_2");
                 comboPesawat.setVisible(true);
                 labelPreview.setVisible(true);
+                btnNext.setBounds(700, 380, 300, 60);
                 btnNext.setText("MULAI PERTEMPURAN!");
-                updatePreview();
+                updatePreview((String) comboPesawat.getSelectedItem());
             }
         } else if (step == 3) {
             // SIMPAN DATA P2 & START
@@ -154,22 +167,21 @@ public class PilihPesawat extends JPanel {
         }
     }
 
-    private void updatePreview() {
-        String pilihan = (String) comboPesawat.getSelectedItem();
-        if (pilihan == null) return;
+    private void updatePreview(String jenisPesawat) {
+        if (jenisPesawat == null) return;
 
         String path;
 
         // --- LOGIKA IF-ELSE UNTUK RESOURCE ---
-        if (pilihan.equals("Pesawat Alien")) {
+        if (jenisPesawat.equals("Pesawat Alien")) {
             path = "/Resources/Image/musuhAlien.png";
-        } else if (pilihan.equals("Pesawat Phantom")) {
+        } else if (jenisPesawat.equals("Pesawat Phantom")) {
             path = "/Resources/Image/musuhPhantom.png";
-        } else if (pilihan.equals("Pesawat Rusia")) {
+        } else if (jenisPesawat.equals("Pesawat Rusia")) {
             path = "/Resources/Image/musuhDarker.png";
         } else {
             // Default untuk pesawat player 1 (Amerika, Jepang, Indonesia)
-            path = "/Resources/Image/" + pilihan.replace(" ", "") + ".png";
+            path = "/Resources/Image/" + jenisPesawat.replace(" ", "") + ".png";
         }
 
         try {
@@ -179,7 +191,7 @@ public class PilihPesawat extends JPanel {
             labelPreview.setText("");
         } catch (Exception e) {
             labelPreview.setIcon(null);
-            labelPreview.setText("Gambar: " + pilihan + " Tidak Ditemukan");
+            labelPreview.setText("Gambar: " + jenisPesawat + " Tidak Ditemukan");
             System.out.println("Gagal load: " + path); // Cek di console path mana yang salah
         }
     }

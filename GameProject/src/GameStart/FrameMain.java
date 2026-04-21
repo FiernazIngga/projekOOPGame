@@ -58,21 +58,11 @@ public class FrameMain extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
-            // Pindah ke layar pemilihan pesawat
-        PilihPesawat menuPilih = new PilihPesawat(this);
-
-        this.getContentPane().removeAll();
-        this.getContentPane().setLayout(new BorderLayout());
-        this.getContentPane().add(menuPilih, BorderLayout.CENTER);
-
-        this.revalidate();
-        this.repaint();
-        this.pack();
-        this.setLocationRelativeTo(null);
+        showPilihPesawat();
     }//GEN-LAST:event_jButton1ActionPerformed
 
     public void jalankanGame(String pes1, String pes2, String n1, String n2, boolean isBot) {
-        gameproject.logic.GamePesawat game = new gameproject.logic.GamePesawat(pes1, pes2, n1, n2, isBot);
+        gameproject.logic.GamePesawat game = new gameproject.logic.GamePesawat(this, pes1, pes2, n1, n2, isBot);
 
         this.getContentPane().removeAll();
         this.getContentPane().setLayout(new BorderLayout());
@@ -84,6 +74,19 @@ public class FrameMain extends javax.swing.JFrame {
 
         game.requestFocusInWindow();
         game.startGameLoop();
+    }
+    
+    public void showPilihPesawat() {
+        PilihPesawat menuPilih = new PilihPesawat(this);
+
+        this.getContentPane().removeAll();
+        this.getContentPane().setLayout(new BorderLayout());
+        this.getContentPane().add(menuPilih, BorderLayout.CENTER);
+
+        this.revalidate();
+        this.repaint();
+        this.pack();
+        this.setLocationRelativeTo(null);
     }
     
     // Variables declaration - do not modify//GEN-BEGIN:variables

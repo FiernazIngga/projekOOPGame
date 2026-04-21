@@ -32,10 +32,7 @@ public class LogikaGame {
     }
 
     public void update() {
-        // HAPUS bagian enemy.followPlayer dan tembak otomatis dari sini!
-        // Biarkan GamePesawat yang menentukan kapan memanggil updateAI()
 
-        // ===== UPDATE BULLETS =====
         for (int i = 0; i < bullets.size(); i++) {
             Bullet b = bullets.get(i);
             b.move();
@@ -60,7 +57,6 @@ public class LogikaGame {
             }
         }
 
-        // ===== UPDATE LEDAKAN =====
         for (int i = 0; i < ledakans.size(); i++) {
             Ledakan l = ledakans.get(i);
             l.update();
